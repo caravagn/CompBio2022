@@ -127,12 +127,14 @@ nv_plot = ggplot(one_sample, aes(NV)) +
   scale_x_log10()
 
 # scatter NV vs DP
-dpnv_plot = ggplot(one_sample, aes(x = NV, y = DP)) +
-  geom_point(aes(color = FILTER), size = .3) +
+dpnv_plot = ggplot(one_sample, aes(x = NV, y = DP, color = VAF %>% as.numeric)) +
+  geom_point(size = .3) +
   geom_density2d() +
   theme(legend.position = 'bottom') +
   facet_wrap(~FILTER) +
-  scale_y_log10()
+  scale_y_log10() +
+  theme_linedraw() +
+  scale_color_distiller(direction = -1, palette = 'Spectral')
 
 # One figure
 library(patchwork) # https://patchwork.data-imaginist.com/
