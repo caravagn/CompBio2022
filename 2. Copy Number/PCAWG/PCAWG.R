@@ -82,7 +82,19 @@ calls %>%
 # 
 # Write your adjustment and visualisation function.
 
+x = calls %>% 
+  mutate(karyotype = paste0(major_cn, ':', minor_cn)) %>% 
+  group_by(chromosome, karyotype, ttype) %>% 
+  summarise(n = n(), L = sum(end - start)) %>% 
+  arrange(chromosome, desc(L)) %>% 
+  filter(karyotype %in% c("1:0", "2:0"), L > 1e8)
 
+hist(x$L, breaks = 100)
+
+x %>% 
+  ggplot() + 
+  geom_bar(aes(x = '1', L, fill = karyotype), stat = 'identity') + 
+  facet_grid(ttype~chromosome, scales = 'free')
   
   
   
